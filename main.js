@@ -8,7 +8,7 @@ let convert = (html) => {
         'bulletListMarker': '*',
         'codeBlockStyle': 'fenced',
         'fence': '```',
-        'emDelimiter': '*',
+        'emDelimiter': '_',
         'strongDelimiter': '**',
         'linkStyle': 'inlined',
         'linkReferenceStyle': 'full',

@@ -1,10 +1,11 @@
 const http = require('http');
 const turndown = require('turndown');
 
+
 let convert = (html) => {
     let turndownService = new turndown({
         'headingStyle': 'atx',
-        'hr': '---',
+        'hr': '***',
         'bulletListMarker': '*',
         'codeBlockStyle': 'fenced',
         'fence': '```',
@@ -46,23 +47,19 @@ let convert = (html) => {
         replacement: (content, node, options) => {
             return '';
         },
-    }).addRule('heading', {
+    }).addRule('header', {
         filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-    
-        replacement: function (content, node, options) {
+        replacement: (content, node, options) => {
             var hLevel = Number(node.nodeName.charAt(1))
+            return '\n\n' + Array(hLevel + 1).join('#') + ' ' + content + '\n';
+        },
+    }).addRule('paragraph', {
+        filter: 'p',
+        replacement: (content, node, options) => {
+            return '\n' + content + '\n\n';
+        },
+    });
     
-            if (options.headingStyle === 'setext' && hLevel < 3) {
-                var underline = repeat((hLevel === 1 ? '=' : '-'), content.length)
-                return (
-                    '\n\n' + content + '\n' + underline + '\n\n'
-                )
-            } else {
-                return '\n\n' + repeat('#', hLevel) + ' ' + content + '\n'
-            }
-        }
-    };
-}
 
     return turndownService.turndown(html) + "\n";
 };
